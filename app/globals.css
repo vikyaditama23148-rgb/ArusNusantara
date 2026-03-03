@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ============================= */
+/* ROOT COLOR SYSTEM (NUSANTARA) */
+/* ============================= */
+
+:root {
+
+  --background: #F9F3E8;
+  --foreground: #4A2E16;
+
+  --nusantara-gold: #C9942A;
+  --nusantara-brown: #6B3F1F;
+  --nusantara-soft: #F4EFE7;
+
+}
+
+/* ============================= */
+/* DARK MODE */
+/* ============================= */
+
+@media (prefers-color-scheme: dark) {
+
+  :root {
+
+    --background: #1A120B;
+    --foreground: #F5E9DA;
+
+  }
+
+}
+
+/* ============================= */
+/* BODY STYLE */
+/* ============================= */
+
+body {
+
+  background: var(--background);
+  color: var(--foreground);
+
+  font-family: system-ui, -apple-system, Arial, Helvetica, sans-serif;
+
+  scroll-behavior: smooth;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+/* ============================= */
+/* NUSANTARA TEXTURE BACKGROUND */
+/* ============================= */
+
+body::before {
+
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background-image: url("/batik-patern.png");
+
+  background-repeat: repeat;
+
+  opacity: 0.04;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+}
+
+/* ============================= */
+/* TYPOGRAPHY */
+/* ============================= */
+
+h1, h2, h3, h4 {
+
+  letter-spacing: -0.01em;
+
+}
+
+/* ============================= */
+/* SCROLLBAR STYLE */
+/* ============================= */
+
+::-webkit-scrollbar {
+
+  width: 8px;
+
+}
+
+::-webkit-scrollbar-track {
+
+  background: #F4EFE7;
+
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: #C9942A;
+  border-radius: 6px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background: #B5451B;
+
+}
+
+/* ============================= */
+/* TEXT SELECTION */
+/* ============================= */
+
+::selection {
+
+  background: #C9942A;
+  color: white;
+
+}
