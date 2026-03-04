@@ -15,6 +15,19 @@ type Quiz = {
 }
 
 export default function QuizPage() {
+  function shuffleArray<T>(array:T[]):T[] {
+
+  const shuffled = [...array]
+
+  for(let i = shuffled.length - 1; i > 0; i--){
+
+    const j = Math.floor(Math.random() * (i + 1))
+
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+
+  return shuffled
+}
 
   const params = useParams()
   const router = useRouter()
@@ -29,13 +42,29 @@ export default function QuizPage() {
   const [playerName,setPlayerName] = useState("")
   const [started,setStarted] = useState(false)
 
-  const [timeLeft,setTimeLeft] = useState(15)
+  const [timeLeft,setTimeLeft] = useState(30)
   const correctSound = typeof Audio !== "undefined" ? new Audio("/sounds/correct.mp3") : null
   const wrongSound = typeof Audio !== "undefined" ? new Audio("/sounds/wrong.mp3") : null
 
   useEffect(()=>{
     initModule()
   },[])
+
+  useEffect(()=>{
+
+  const student = localStorage.getItem("student")
+
+  if(student){
+
+    const data = JSON.parse(student)
+
+    setPlayerName(data.name || data.username)
+
+    setStarted(true)
+
+    }
+
+    },[])
 
   useEffect(()=>{
 
@@ -71,27 +100,38 @@ export default function QuizPage() {
       .select("*")
       .eq("module_id",module.id)
 
-    setQuizzes(data || [])
+    setQuizzes(shuffleArray(data || []))
   }
 
   async function saveScore(){
 
     if(!moduleId) return
 
-    const { error } = await supabase
-      .from("leaderboard")
-      .insert({
-        player_name: playerName || "Pemain",
-        module_id: moduleId,
-        score: score,
-        total_question: quizzes.length
-      })
+  const student = localStorage.getItem("student")
 
-    if(error){
-      console.error("Insert leaderboard error:", error)
-    }
+  let userType = "public"
+  let player = playerName || "Pemain"
 
+  if(student){
+    const data = JSON.parse(student)
+    userType = "student"
+    player = data.name || data.username
   }
+
+  const { error } = await supabase
+    .from("leaderboard")
+    .insert({
+      player_name: player,
+      module_id: moduleId,
+      score: score,
+      total_question: quizzes.length,
+      user_type: userType
+    })
+
+  if(error){
+    console.error("Insert leaderboard error:", error)
+  }
+}
 
   function handleAnswer(answer:string){
 
@@ -131,7 +171,7 @@ export default function QuizPage() {
 
       setCurrent(prev=>prev+1)
       setSelected(null)
-      setTimeLeft(15)
+      setTimeLeft(30)
 
     }else{
 
@@ -209,8 +249,16 @@ export default function QuizPage() {
             Quiz Budaya Nusantara
           </h1>
 
-          <div className="text-red-600 font-bold">
-            ⏱ {timeLeft}s
+          <div 
+          className={`font-bold ${
+          timeLeft <= 5
+          ? "text-red-700 animate-pulse"
+          : timeLeft <= 10
+          ? "text-orange-600"
+          : "text-green-700"
+        }`}
+      >
+        ⏱ {timeLeft} detik
           </div>
 
         </div>
