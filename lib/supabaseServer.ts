@@ -10,10 +10,13 @@ export async function createSupabaseServer() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
+        getAll() {
+          return cookieStore.getAll()
         },
-      },
+        setAll() {
+          // kosongkan agar tidak mencoba set cookie di server component
+        }
+      }
     }
   )
 }

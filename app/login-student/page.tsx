@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabaseClient"
+import bcrypt from "bcryptjs"
 
 export default function StudentLoginPage() {
 
@@ -17,20 +18,26 @@ export default function StudentLoginPage() {
     setLoading(true)
 
     const { data,error } = await supabase
-      .from("students")
-      .select("*")
-      .eq("username",username)
-      .eq("password",password)
-      .single()
+    .from("students")
+    .select("*")
+    .eq("username",username)
+    .single()
 
-    setLoading(false)
+  if(!data){
+    alert("Username tidak ditemukan")
+    return
+  }
 
-    if(error || !data){
-      alert("Username atau password salah")
-      return
-    }
+    const match = await bcrypt.compare(password, data.password_hash)
+
+  if(!match){
+    alert("Password salah")
+    return
+  }
 
     localStorage.setItem("student", JSON.stringify(data))
+    localStorage.setItem("student_id", data.id)
+    localStorage.setItem("student_name", data.name)
 
     router.push("/quest")
   }

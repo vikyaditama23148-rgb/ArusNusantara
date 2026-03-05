@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabaseClient"
+import { getStudentSession } from "@/lib/studentSession"
 
 type Quiz = {
   id: string
@@ -52,7 +53,7 @@ export default function QuizPage() {
 
   useEffect(()=>{
 
-  const student = localStorage.getItem("student")
+  const student = getStudentSession()
 
   if(student){
 

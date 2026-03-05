@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { getStudentSession } from "@/lib/studentSession"
 
 export default function Navbar() {
 
@@ -12,11 +13,11 @@ export default function Navbar() {
 
   useEffect(()=>{
 
-    const data = localStorage.getItem("student")
+  const studentData = getStudentSession()
 
-    if(data){
-      setStudent(JSON.parse(data))
-    }
+  if(studentData){
+    setStudent(studentData)
+  }
 
   },[])
 
@@ -51,6 +52,9 @@ export default function Navbar() {
           <Link 
             href="/student-leaderboard" className="text-gray-300 hover:text-white">
             Leaderboard Siswa
+          </Link>
+          <Link href="/about" className="text-gray-300 hover:text-white">
+            Tentang
           </Link>
 
           {/* jika siswa login */}

@@ -7,6 +7,8 @@ import PlayerStatus from "./components/PlayerStatus"
 import DailyChallenge from "./components/DailyChallenge"
 import NusantaraBackground from "./components/NusantaraBackground"
 import UserSession from "./components/UserSession"
+import FeedbackSection from "./components/FeedbackSection"
+import Footer from "./components/Footer"
 
 export default function HomePage() {
   return (
@@ -32,6 +34,10 @@ export default function HomePage() {
       <Features />
 
       <PreviewModules />
+
+      <FeedbackSection />
+
+      <Footer />
 
     </div>
   )
