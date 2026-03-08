@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { supabase } from "@/lib/supabaseClient"
+import { useRouter } from "next/navigation"
+import { getStudentSession } from "@/lib/studentSession"
 
 type Module = {
   id: string
@@ -20,6 +22,7 @@ type ModuleStats = {
 
 export default function ModulesClient() {
 
+  const router = useRouter()
   const [modules, setModules] = useState<Module[]>([])
   const [stats, setStats] = useState<Record<string, ModuleStats>>({})
   const [provinces, setProvinces] = useState<string[]>([])
@@ -28,6 +31,15 @@ export default function ModulesClient() {
   const [province, setProvince] = useState("")
   const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+
+  const student = getStudentSession()
+
+  if(!student){
+    router.push("/login-student")
+  }
+
+}, [])
   useEffect(() => {
     fetchProvinces()
   }, [])

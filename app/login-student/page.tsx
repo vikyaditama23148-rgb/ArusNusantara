@@ -39,7 +39,7 @@ export default function StudentLoginPage() {
     localStorage.setItem("student_id", data.id)
     localStorage.setItem("student_name", data.name)
 
-    router.push("/quest")
+    router.push("/")
   }
 
   return (

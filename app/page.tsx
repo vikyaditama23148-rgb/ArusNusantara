@@ -9,6 +9,7 @@ import NusantaraBackground from "./components/NusantaraBackground"
 import UserSession from "./components/UserSession"
 import FeedbackSection from "./components/FeedbackSection"
 import Footer from "./components/Footer"
+import MascotGuide from "./components/MascotGuide"
 
 export default function HomePage() {
   return (
@@ -36,6 +37,8 @@ export default function HomePage() {
       <PreviewModules />
 
       <FeedbackSection />
+
+      <MascotGuide />
 
       <Footer />
 

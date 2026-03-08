@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { exportStudentPDF } from "@/lib/exportStudentPDF"
+import bcrypt from "bcryptjs"
 
 export default function GenerateStudents(){
 
@@ -13,24 +14,46 @@ const [created,setCreated] = useState<any[]>([])
 
 async function generate(){
 
+if(!school || !studentClass){
+alert("Isi sekolah dan kelas terlebih dahulu")
+return
+}
+
 const list = names
 .split("\n")
 .map(n=>n.trim())
 .filter(n=>n.length>0)
 
-const students = list.map((name)=>{
+if(list.length === 0){
+alert("Masukkan daftar nama siswa")
+return
+}
 
-const username =
+if(list.length > 50){
+alert("Maksimal 50 siswa sekali generate")
+return
+}
+
+const passwordDefault = "123456"
+const passwordHash = await bcrypt.hash(passwordDefault,10)
+
+const students = list.map((name,i)=>{
+
+let username =
 name
 .toLowerCase()
 .replace(/\s+/g,"")
 
+// tambahkan angka jika duplicate
+username = username + (i+1)
+
 return{
 username,
-password:"123456",
+password: passwordDefault,
+password_hash: passwordHash,
 name,
 school,
-class:studentClass
+class: studentClass
 }
 
 })
@@ -40,7 +63,7 @@ const { error } = await supabase
 .insert(students)
 
 if(error){
-alert("Gagal membuat akun")
+alert("Gagal membuat akun: " + error.message)
 return
 }
 

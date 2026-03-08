@@ -1,50 +1,36 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-export async function middleware(req: NextRequest) {
+export function middleware(req: NextRequest) {
 
-  const res = NextResponse.next()
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name) {
-          return req.cookies.get(name)?.value
-        },
-        set(name, value, options) {
-          res.cookies.set({ name, value, ...options })
-        },
-        remove(name, options) {
-          res.cookies.set({ name, value: '', ...options })
-        },
-      },
-    }
-  )
-
-  const { data: { session } } = await supabase.auth.getSession()
+  const student = req.cookies.get("student")
 
   const protectedRoutes = [
     "/quest",
-    "/modules"
+    "/modules",
+    "/student-leaderboard"
   ]
 
   const isProtected = protectedRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route)
   )
 
-  if (isProtected && !session) {
-    return NextResponse.redirect(new URL('/login', req.url))
+  if (isProtected && !student) {
+
+    return NextResponse.redirect(
+      new URL("/login-student", req.url)
+    )
+
   }
 
-  return res
+  return NextResponse.next()
+
 }
 
 export const config = {
   matcher: [
     "/quest/:path*",
     "/modules/:path*",
+    "/student-leaderboard/:path*"
   ],
 }

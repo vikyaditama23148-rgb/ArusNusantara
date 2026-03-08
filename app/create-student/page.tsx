@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import bcrypt from "bcryptjs"
 
 export default function CreateStudent(){
 
@@ -13,11 +14,14 @@ const [studentClass,setStudentClass] = useState("")
 
 async function createStudent(){
 
+const hashedPassword = await bcrypt.hash(password,10)
+
 const { error } = await supabase
 .from("students")
 .insert({
 username,
-password,
+password, 
+password_hash: hashedPassword,
 name,
 school,
 class: studentClass
@@ -63,6 +67,7 @@ Password
 </label>
 
 <input
+type="password"
 placeholder="Contoh: 123456"
 value={password}
 onChange={(e)=>setPassword(e.target.value)}

@@ -53,9 +53,9 @@ export default function QuizPage() {
 
   useEffect(()=>{
 
-  const student = getStudentSession()
+    const student = localStorage.getItem("student")
 
-  if(student){
+    if(student){
 
     const data = JSON.parse(student)
 
