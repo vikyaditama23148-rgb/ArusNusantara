@@ -6,8 +6,10 @@ export function middleware(req: NextRequest) {
   const student = req.cookies.get("student")
 
   const protectedRoutes = [
-    "/quest",
+    "/lobby",
     "/modules",
+    "/quest",
+    "/games",
     "/student-leaderboard"
   ]
 
@@ -16,21 +18,20 @@ export function middleware(req: NextRequest) {
   )
 
   if (isProtected && !student) {
-
     return NextResponse.redirect(
-      new URL("/login-student", req.url)
+      new URL("/login", req.url)
     )
-
   }
 
   return NextResponse.next()
-
 }
 
 export const config = {
   matcher: [
-    "/quest/:path*",
+    "/lobby/:path*",
     "/modules/:path*",
+    "/quest/:path*",
+    "/games/:path*",
     "/student-leaderboard/:path*"
   ],
 }

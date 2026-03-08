@@ -15,12 +15,25 @@ export default function LobbyGameSection() {
           selesaikan quiz, dan kumpulkan XP untuk naik level.
         </p>
 
-        <Link
-          href="/quest"
-          className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4 rounded-xl transition"
-        >
-          Mulai Petualangan
-        </Link>
+        {/* Tombol Quest */}
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
+
+          <Link
+            href="/quest"
+            className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-4 rounded-xl transition"
+          >
+            Mulai Petualangan
+          </Link>
+
+          {/* Tombol Mini Games */}
+          <Link
+            href="/games"
+            className="border border-yellow-500 text-yellow-400 hover:bg-yellow-500 hover:text-black font-semibold px-8 py-4 rounded-xl transition"
+          >
+            🎮 Mini Games
+          </Link>
+
+        </div>
 
       </div>
 

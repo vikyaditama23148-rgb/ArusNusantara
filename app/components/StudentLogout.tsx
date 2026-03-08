@@ -8,9 +8,17 @@ export default function StudentLogout(){
 
   function handleLogout(){
 
+    // hapus localStorage
     localStorage.removeItem("student")
+    localStorage.removeItem("student_id")
+    localStorage.removeItem("student_name")
 
+    // hapus cookie student secara paksa
+    document.cookie = "student=; Max-Age=0; path=/"
+
+    // redirect ke halaman utama
     router.push("/")
+
   }
 
   return(

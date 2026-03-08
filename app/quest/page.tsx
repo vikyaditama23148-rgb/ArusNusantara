@@ -1,8 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { getStudentSession } from "@/lib/studentSession"
 import { createClient } from "@supabase/supabase-js"
 import Link from "next/link"
 
@@ -25,23 +23,12 @@ type Score = {
 
 export default function QuestPage() {
 
-  const router = useRouter()
-
   const [modules,setModules] = useState<Module[]>([])
   const [scores,setScores] = useState<Score[]>([])
   const [loading,setLoading] = useState(true)
 
   useEffect(()=>{
-
-    const student = getStudentSession()
-
-    if(!student){
-      router.push("/login-student")
-      return
-    }
-
     fetchData()
-
   },[])
 
   async function fetchData(){
