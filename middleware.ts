@@ -5,6 +5,12 @@ export function middleware(req: NextRequest) {
 
   const student = req.cookies.get("student")
 
+  const hasSupabaseSession = req.cookies
+    .getAll()
+    .some(cookie => cookie.name.startsWith("sb-"))
+
+  const isLoggedIn = student || hasSupabaseSession
+
   const protectedRoutes = [
     "/lobby",
     "/modules",
@@ -17,7 +23,7 @@ export function middleware(req: NextRequest) {
     req.nextUrl.pathname.startsWith(route)
   )
 
-  if (isProtected && !student) {
+  if (isProtected && !isLoggedIn) {
     return NextResponse.redirect(
       new URL("/login", req.url)
     )
